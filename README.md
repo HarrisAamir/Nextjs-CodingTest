@@ -6,13 +6,6 @@ First, clone this git repo using :
 
 ```bash
 git clone https://github.com/HarrisAamir/Nextjs-CodingTest.git
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 Then open terminal in the location where git repo is cloned and run the following command to install required libraries:
 
