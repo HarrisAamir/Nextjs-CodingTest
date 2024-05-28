@@ -5,39 +5,36 @@ import Navbar from "@/app/components/NavBar";
 import Category from "@/app/components/Category";
 import Footer from "@/app/components/Footer";
 import Transition from "@/app/components/Transition";
-const getBlogData = (id: any) => {
-  for (let i = 0; i < blogs.length; i++) {
-    if (blogs[i].id === id) return { found: true, blog: blogs[i] };
-  }
-  return { found: false, blog: {heading:"",image:"",category:"",date:"",content:"", author:"" }};
-};
+import useFetchData from "@/hooks/useFetchData";
 
 export default function Home() {
   const router = useParams();
-  const blogData = getBlogData(router.id);
+   const url= "https://jsonplaceholder.typicode.com/posts/"+router.id
+  console.log(url)
+  const [post] = useFetchData(url)
 
   return (
    <Transition>
     <div className="bg-white">
        <Navbar/>
-      {blogData.found ? (
+       {post[0]!=="loading" ? (
         <div className="h-full  flex flex-col gap-2 my-3 w-[90%] md:w-[80%] mx-auto">
-          <h1 className="text-3xl font-bold text-center">{blogData.blog.heading}</h1>
-          <div className="mx-auto text-lg"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRbK-uDHZlg6fEBb9pu628Eg3m0yX1nm16zl9oLbFhuQ&s" className="inline w-[20px] h-[20px] rounded-full  md:w-[30px] md:h-[30px] "/> {blogData.blog.author}</div>
+          <h1 className="text-3xl font-bold text-center">{post.title}</h1>
+          {/* <div className="mx-auto text-lg"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRbK-uDHZlg6fEBb9pu628Eg3m0yX1nm16zl9oLbFhuQ&s" className="inline w-[20px] h-[20px] rounded-full  md:w-[30px] md:h-[30px] "/> {blogData.blog.author}</div> */}
           {/* <p className="text-lg md:text-xl text-center ">{blogData.blog.author}</p> */}
-          <img src={blogData.blog.image} className="w-[70%] md:w-[60%] md:h-[45%] mx-auto my-5"/>
+          {/* <img src={"https://picsum.photos/100?random="+post.id} className="w-[30%] h-[20%] md:w-[60%] md:h-[45%] mx-auto my-5"/>  */}
           <div className="flex flex-row justify-between">
-            <Category category={blogData.blog.category}/>
-            <p className="text-sm md:text-lg">{blogData.blog.date}</p>
+             <Category category={"Post"}/> 
+            {/* <p className="text-sm md:text-lg">{blogData.blog.date}</p> */}
           </div>
           <div className="text-sm md:text-lg flex flex-col gap-3">
-          {blogData.blog.content.split("\n").map((line:any)=> {return (<p>{line}</p>)})}
+          {post.body.split("\n").map((line:any)=> {return (<p>{line}</p>)})}
           </div>
         </div>
       ) : (
-        <div className="h-screen text-center text-bold text-xl"> Not found</div>
+        <div className="h-screen text-center text-bold text-xl"> Loading! </div>
       )}
-      <Footer/>
+       <Footer/>
     </div>
     </Transition>
    
